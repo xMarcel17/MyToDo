@@ -1,3 +1,4 @@
+package com.example.mytodo
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 // this is the enum class that will be used to store the importance of the tasks

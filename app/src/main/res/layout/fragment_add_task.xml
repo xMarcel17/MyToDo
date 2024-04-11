@@ -89,13 +89,13 @@
         app:layout_constraintTop_toBottomOf="@+id/descriptionInput" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/saveButton"
         android:layout_width="51dp"
         android:layout_height="48dp"
         android:src="@android:drawable/ic_menu_save"
         app:layout_constraintBottom_toBottomOf="@+id/titleInput"
         app:layout_constraintStart_toEndOf="@+id/titleInput"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/todo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

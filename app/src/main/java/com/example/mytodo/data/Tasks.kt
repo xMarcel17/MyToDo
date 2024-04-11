@@ -1,3 +1,5 @@
+import com.example.mytodo.Task
+
 object Tasks {
     // This is the list that will be used to store the tasks
     val list: MutableList<Task> = ArrayList()
@@ -26,5 +28,18 @@ object Tasks {
             builder.append("\nMore details information here.")
         }
         return builder.toString()
+    }
+
+    fun updateTask(oldTask: Task?, newTask: Task) {
+        //perform the update operation only if the old task is not null
+        oldTask?.let { old ->
+            //find the index of the old task in the list
+// indexOf will be -1 if the old task is not in the list
+            val indexOfOld = list.indexOf(old)
+            if (indexOfOld != -1) { // check if the old task is in the list
+                //replace the old task with the new task
+                list[indexOfOld] = newTask
+            }
+        }
     }
 }

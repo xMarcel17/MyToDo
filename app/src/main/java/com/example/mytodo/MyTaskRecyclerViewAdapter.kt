@@ -4,12 +4,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mytodo.IMPORTANCE
 import com.example.mytodo.R
+import com.example.mytodo.Task
+import com.example.mytodo.ToDoListListener
 import com.example.mytodo.databinding.FragmentTaskItemBinding
 
 // Adapter is responsible for managing the display of the list –binding data with the views
 class MyTaskRecyclerViewAdapter(
-    private val values: List<Task>
+    private val values: List<Task>,
+    private val eventListener: ToDoListListener
 ): RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder>()
 {
     // The ViewHolder class is a container for the views in the recycler view item
@@ -54,6 +58,15 @@ class MyTaskRecyclerViewAdapter(
         // set the image view and text view with the task data
         holder.imgView.setImageResource(importanceImgae)
         holder.contentView.text = task.title
+
+        // set the click and long click listeners for the view holder
+        holder.itemContainer.setOnClickListener {
+            eventListener.onTaskClick(position)
+        }
+        holder.itemContainer.setOnLongClickListener setOnLogicClickListener@{
+            eventListener.onTaskLongClick(position)
+            return@setOnLogicClickListener true // consume the long click event
+        }
     }
 
     override fun getItemCount(): Int {

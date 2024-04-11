@@ -1,14 +1,19 @@
 package com.example.mytodo
 
+import Tasks
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.mytodo.databinding.FragmentAddTaskBinding
 
 class AddTaskFragment : Fragment() {
-
+    val args: AddTaskFragmentArgs by navArgs()
     private lateinit var binding: FragmentAddTaskBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -16,6 +21,17 @@ class AddTaskFragment : Fragment() {
     ): View? {
         // Initialize the binding variable
         binding = FragmentAddTaskBinding.inflate(inflater, container, false)
+        // Set the title and description EditText fields with the task to edit
+        // (only if it's not null)
+        binding.titleInput.setText(args.taskToEdit?.title)
+        binding.descriptionInput.setText(args.taskToEdit?.description)
+        // Set the importance radio button with the task to edit (only if it's not null)
+        when(args.taskToEdit?.importance){
+            IMPORTANCE.LOW -> binding.lowRadioButton.isChecked = true
+            IMPORTANCE.NORMAL -> binding.normalRadioButton.isChecked = true
+            IMPORTANCE.HIGH -> binding.highRadioButton.isChecked = true
+            else -> binding.normalRadioButton.isChecked = true
+        }
         return binding.root
     }
 
@@ -46,13 +62,22 @@ class AddTaskFragment : Fragment() {
             description,
             importance
         )
-        // Add the new task to the list of tasks
-        Tasks.addTask(taskItem)
+        if(!args.edit) {
+            // Add the new task to the list of tasks
+            Tasks.addTask(taskItem)
+        }else{
+            // Update the task in the list of tasks
+            Tasks.updateTask(oldTask = args.taskToEdit,newTask = taskItem)
+        }
 
         // Hide the software keyboard with InputMethodManager
         val inputMethodManager: InputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken,0)
+
+        // Navigate back to the TaskListFragment, the inclusive parameter is set to false
+        findNavController().popBackStack(R.id.taskListFragment, false)
+
     }
 
 }
